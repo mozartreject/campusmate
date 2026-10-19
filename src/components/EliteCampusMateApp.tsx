@@ -92,14 +92,31 @@ export const EliteCampusMateApp: React.FC = () => {
     logout 
   } = useApp();
 
-  const [activeTab, setActiveTab] = useState<string>('dashboard');
+  const [activeTab, setActiveTab] = useState<string>(() => {
+    try {
+      if (typeof window !== 'undefined' && window.location) {
+        const urlParams = new URLSearchParams(window.location.search);
+        const tabParam = urlParams.get('tab');
+        if (tabParam) return tabParam;
+      }
+    } catch {}
+    return 'dashboard';
+  });
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState<boolean>(false);
   const [searchQuery, setSearchQuery] = useState<string>('');
   
   // Timetable view state
   const [selectedDay, setSelectedDay] = useState<'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday'>('Monday');
-  const [timetableMode, setTimetableMode] = useState<'day' | 'week'>('day');
+  const [timetableMode, setTimetableMode] = useState<'day' | 'week'>(() => {
+    try {
+      if (typeof window !== 'undefined' && window.location) {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('mode') === 'week') return 'week';
+      }
+    } catch {}
+    return 'day';
+  });
   const [activeAlerts, setActiveAlerts] = useState<Record<string, boolean>>({});
 
   // Library search, filter & sort state

@@ -135,10 +135,36 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     return mockStudents;
   });
 
+  // Helper to read initial URL params safely
+  const getUrlParam = (param: string): string | null => {
+    try {
+      if (typeof window !== 'undefined' && window.location) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(param);
+      }
+    } catch {}
+    return null;
+  };
+
   // User & Navigation
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(() => {
+    try {
+      const loginParam = getUrlParam('login');
+      if (loginParam === '1' || loginParam === 'true') return true;
+      return localStorage.getItem('campusmate_logged_in') === 'true';
+    } catch {
+      return false;
+    }
+  });
   const [currentUser, setCurrentUser] = useState<StudentProfile>(allUsers[0]);
-  const [activeTab, setActiveTab] = useState<NavigationTab>('dashboard');
+  const [activeTab, setActiveTab] = useState<NavigationTab>(() => {
+    const tabParam = getUrlParam('tab');
+    const validTabs: NavigationTab[] = ['dashboard', 'timetable', 'attendance', 'assignments', 'events', 'notes', 'announcements', 'exams', 'settings'];
+    if (tabParam && validTabs.includes(tabParam as NavigationTab)) {
+      return tabParam as NavigationTab;
+    }
+    return 'dashboard';
+  });
   const [searchQuery, setSearchQuery] = useState<string>('');
 
   // Dynamically default to current academic day of the week
@@ -169,18 +195,28 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   // Accessibility & Theme
   const [textSize, setTextSize] = useState<'normal' | 'large' | 'xlarge'>('normal');
-  const [highContrast, setHighContrast] = useState<boolean>(false);
-  const [darkMode, setDarkMode] = useState<boolean>(true);
+  const [highContrast, setHighContrast] = useState<boolean>(() => getUrlParam('contrast') === '1');
+  const [darkMode, setDarkMode] = useState<boolean>(() => {
+    const darkParam = getUrlParam('dark');
+    if (darkParam === '0' || darkParam === 'false') return false;
+    return true;
+  });
   const [undoWindowSeconds, setUndoWindowSeconds] = useState<number>(10);
   const [reduceMotion, setReduceMotion] = useState<boolean>(false);
   const [dyslexiaFont, setDyslexiaFont] = useState<boolean>(false);
-  const [colorBlindMode, setColorBlindMode] = useState<'none' | 'protanopia' | 'deuteranopia' | 'highContrast'>('none');
+  const [colorBlindMode, setColorBlindMode] = useState<'none' | 'protanopia' | 'deuteranopia' | 'highContrast'>(() => {
+    const cbParam = getUrlParam('colorblind');
+    if (cbParam === 'protanopia' || cbParam === 'deuteranopia' || cbParam === 'highContrast') {
+      return cbParam;
+    }
+    return 'none';
+  });
 
   // Toasts
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
 
   // HCI Modal
-  const [hciModalOpen, setHciModalOpen] = useState<boolean>(false);
+  const [hciModalOpen, setHciModalOpen] = useState<boolean>(() => getUrlParam('hci') === '1');
   const [selectedPrincipleId, setSelectedPrincipleId] = useState<string | null>(null);
 
   // Apply HTML accessibility & theme attributes dynamically
@@ -619,6 +655,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const login = (user?: StudentProfile) => {
     if (user) setCurrentUser(user);
     setIsLoggedIn(true);
+    try {
+      localStorage.setItem('campusmate_logged_in', 'true');
+    } catch {}
     addToast({
       title: 'Welcome Back!',
       message: `Signed in as ${user?.name || currentUser.name}.`,
@@ -628,6 +667,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const logout = () => {
     setIsLoggedIn(false);
+    try {
+      localStorage.removeItem('campusmate_logged_in');
+    } catch {}
     addToast({
       title: 'Logged Out',
       message: 'You have been securely signed out.',

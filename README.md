@@ -34,6 +34,30 @@ This causes extreme cognitive fatigue, unexpected attendance eligibility crises 
 
 ---
 
+## 📸 Interface Gallery & Dashboard Showcase
+
+| 🌙 Unified Academic Hub (Dark Theme) | ☀️ Unified Academic Hub (Light Theme) |
+| :---: | :---: |
+| ![Academic Hub Dark](screenshots/01-dashboard-dark.png) | ![Academic Hub Light](screenshots/02-dashboard-light.png) |
+
+| 🏆 Interactive HCI Principles Evaluation | 👁️ Color-Blind Safe Mode (Protanopia) |
+| :---: | :---: |
+| ![HCI Principles](screenshots/03-dashboard-hci-principles.png) | ![Color Blind Safe](screenshots/04-dashboard-colorblind-protanopia.png) |
+
+| 📅 Weekly Schedule Matrix (Mon–Fri Grid) | 🧮 Smart Catch-up & Safe Bunk Calculator |
+| :---: | :---: |
+| ![Timetable Matrix](screenshots/06-timetable-weekly-matrix.png) | ![Attendance Calculator](screenshots/07-attendance-safe-bunks.png) |
+
+| 📚 Stepped Folders Library (Solved PYQs & Mocks) | 🎟️ Digital Examination Hall Pass & QR |
+| :---: | :---: |
+| ![Library & Solved PYQs](screenshots/10-library-pyqs-mock-papers.png) | ![Exam Hall](screenshots/09-examination-hall.png) |
+
+| 🎯 High-Contrast Monochrome Mode | 👥 Student Portal & New User Registration |
+| :---: | :---: |
+| ![Monochrome Mode](screenshots/05-dashboard-monochrome.png) | ![Login Persona Switcher](screenshots/11-login-persona-switcher.png) |
+
+---
+
 ## 🧠 Human-Computer Interaction (HCI) Frameworks & Compliance
 
 CampusMate was built from the ground up to demonstrate mastery of classical and modern HCI principles. Click the **"HCI Principles"** button on the top navigation bar inside the app to inspect the live interactive mapping matrix.
