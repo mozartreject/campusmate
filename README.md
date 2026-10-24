@@ -212,5 +212,5 @@ npm run preview
 ---
 
 ## 📄 Academic Integrity & License
-Developed as part of the **Human-Computer Interaction (HCI)** curriculum at SVKM's NMIMS MPSTME, Mumbai.  
+Developed as part of the **Human-Computer Interaction (HCI)** curriculum at SVKM's NMIMS Indore.  
 Licensed under the [MIT License](LICENSE).
